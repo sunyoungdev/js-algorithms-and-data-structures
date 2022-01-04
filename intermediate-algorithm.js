@@ -248,3 +248,139 @@ function smallestCommons(arr) {
 }
 
 console.log(smallestCommons([23, 18]));
+
+// Drop it
+function dropElements(arr, func) {
+  while (arr.length > 0 && !func(arr[0])) {
+    arr.shift();
+  }
+  console.log(arr);
+  return arr;
+}
+
+dropElements([0, 1, 0, 1], function (n) {
+  return n === 1;
+});
+
+// Steamroller
+function steamrollArray(arr) {
+  const flat = [].concat(...arr);
+  console.log(flat);
+
+  return flat.some(Array.isArray) ? steamrollArray(flat) : flat;
+}
+
+steamrollArray([[["a"]], [["b"]]]);
+
+// Binary Agents
+function binaryAgent(str) {
+  const strArr = str.split(" ");
+  const filtered = strArr
+    .map((val) => String.fromCharCode(parseInt(val, 2)))
+    .join("");
+  console.log(filtered);
+  return filtered;
+}
+
+binaryAgent(
+  "01000001 01110010 01100101 01101110 00100111 01110100 00100000 01100010 01101111 01101110 01100110 01101001 01110010 01100101 01110011 00100000 01100110 01110101 01101110 00100001 00111111"
+);
+
+// Everything Be True
+function truthCheck(collection, pre) {
+  console.log(collection.every((obj) => obj[pre]));
+  return collection.every((obj) => obj[pre]);
+}
+
+truthCheck(
+  [
+    { user: "Tinky-Winky", sex: "male" },
+    { user: "Dipsy" },
+    { user: "Laa-Laa", sex: "female" },
+    { user: "Po", sex: "female" },
+  ],
+  "sex"
+);
+
+// Arguments Optional
+function addTogether() {
+  const [first, second] = arguments;
+  if (typeof first !== "number") {
+    return undefined;
+  }
+  if (second === undefined) {
+    return (second) => addTogether(first, second);
+  }
+  if (typeof second !== "number") {
+    return undefined;
+  }
+
+  return first + second;
+}
+
+console.log(addTogether(2, "3"));
+
+// Make a Person
+const Person = function (firstAndLast) {
+  // Only change code below this line
+  // Complete the method below and implement the others similarly
+  let fullName = firstAndLast;
+  this.getFirstName = function () {
+    return fullName.split(" ")[0];
+  };
+  this.getLastName = function () {
+    return fullName.split(" ")[1];
+  };
+  this.getFullName = function () {
+    return fullName;
+  };
+  this.setFirstName = function (first) {
+    fullName = `${first} ${fullName.split(" ")[1]}`;
+  };
+  this.setLastName = function (last) {
+    fullName = `${fullName.split(" ")[0]} ${last}`;
+  };
+  this.setFullName = function (firstAndLast) {
+    fullName = firstAndLast;
+  };
+  return firstAndLast;
+};
+
+const bob = new Person("Bob Ross");
+console.log(bob.getFullName());
+console.log(bob.getFirstName());
+console.log(bob.getLastName());
+bob.setFirstName("Haskell");
+console.log(bob.getFullName());
+bob.setLastName("Curry");
+console.log(bob.getFullName());
+bob.setFullName("Haskell Curry");
+console.log(bob.getFullName());
+
+// Map the Debris
+function orbitalPeriod(arr) {
+  const GM = 398600.4418;
+  const earthRadius = 6367.4447;
+  const a = 2 * Math.PI;
+  const newArr = [];
+
+  const getOrbPeriod = (obj) => {
+    const c = Math.pow(earthRadius + obj.avgAlt, 3);
+    const b = Math.sqrt(c / GM);
+    const orbPeriod = Math.round(a * b);
+    return { name: obj.name, orbitalPeriod: orbPeriod };
+  };
+
+  for (const elem in arr) {
+    newArr.push(getOrbPeriod(arr[elem]));
+  }
+
+  console.log(newArr);
+  return newArr;
+}
+
+orbitalPeriod([
+  { name: "iss", avgAlt: 413.6 },
+  { name: "hubble", avgAlt: 556.7 },
+  { name: "moon", avgAlt: 378632.553 },
+]);
